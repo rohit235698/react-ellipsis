@@ -1,0 +1,9 @@
+{
+    "compilerOptions":{
+        "declaration": true,
+        "jsx": "react-jsx",
+        "moduleResolution":"bundler",
+        "lib":["DOM", "DOM.Iterable", "ESNext"]
+    },
+    "include": ["src"]
+}
