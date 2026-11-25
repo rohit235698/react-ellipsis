@@ -23,8 +23,9 @@ function Ellipsis({ children, style, tooltip = false, tooltipStyle }: Props) {
         const parent = elem.parentElement!;
         const { paddingBottom } = window.getComputedStyle(parent);
         const height = parent.getBoundingClientRect().height - parseInt(paddingBottom);
-        let ch = elem.getBoundingClientRect().height;
+        const ch = elem.getBoundingClientRect().height;
         let emptySpaceLen = 0;
+        /* eslint-disable react-hooks/set-state-in-effect */
         if (ch > height) {
             if (start === -1 && end === -1) {
                 setStart(0);
@@ -48,12 +49,18 @@ function Ellipsis({ children, style, tooltip = false, tooltipStyle }: Props) {
             setStart(m);
             setText(children.slice(0, ((m + end) >> 1) - emptySpaceLen));
         }
+        /* eslint-enable react-hooks/set-state-in-effect */
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [start, end]);
+
+
     let offsetTop = 0;
+    /* eslint-disable react-hooks/refs */
     if (contentRef.current) {
         const { lineHeight, fontSize } = window.getComputedStyle(contentRef.current!)
         offsetTop = (lineHeight === "normal" ? 1.5 : (+lineHeight + 0.3)) * parseInt(fontSize);
     }
+
     let offsetLeft = 0;
     if (ref.current)
         offsetLeft = ref.current!.getBoundingClientRect().width;
@@ -64,6 +71,7 @@ function Ellipsis({ children, style, tooltip = false, tooltipStyle }: Props) {
             {showTooltip && createPortal(<Tooltip content={children} bounds={ref.current!.getBoundingClientRect()} offsetTop={offsetTop} offsetLeft={offsetLeft} style={tooltipStyle}/>, document.body)}
         </span>
     );
+    /* eslint-enable react-hooks/refs */
 }
 
 export default Ellipsis
